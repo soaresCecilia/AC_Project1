@@ -1,64 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
 <nta>
-	<declaration>// Place global declarations here.</declaration>
+	<declaration>// Place global declarations here.
+
+broadcast chan vehicle;
+
+chan redMinor, changeTraffic;</declaration>
 	<template>
-		<name>MinorRoadSemaphore</name>
-		<declaration>clock x;</declaration>
-		<location id="id0" x="34" y="-178" color="#ff0000">
-			<name x="24" y="-212">Red</name>
+		<name>Sensor</name>
+		<location id="id0" x="-34" y="-136">
+			<name x="-44" y="-170">On</name>
 		</location>
-		<location id="id1" x="-161" y="68" color="#00ff00">
-			<name x="-171" y="34">Green</name>
-			<label kind="invariant" x="-229" y="59">x&lt;=25</label>
-		</location>
-		<location id="id2" x="221" y="76" color="#ffff00">
-			<name x="211" y="42">Yellow</name>
-			<label kind="invariant" x="211" y="93">x&lt;=5</label>
-		</location>
-		<location id="id3" x="221" y="-127">
-			<label kind="invariant" x="238" y="-136">x&lt;=1</label>
-		</location>
-		<location id="id4" x="-161" y="-119">
-			<label kind="invariant" x="-221" y="-127">x&lt;=1</label>
-		</location>
-		<location id="id5" x="34" y="136">
-			<label kind="invariant" x="24" y="153">x&lt;=1</label>
+		<location id="id1" x="-34" y="51">
+			<name x="-44" y="17">Off</name>
 		</location>
 		<init ref="id0"/>
 		<transition>
-			<source ref="id3"/>
+			<source ref="id1"/>
 			<target ref="id0"/>
-			<label kind="guard" x="110" y="-178">x&gt;=1</label>
-			<label kind="assignment" x="119" y="-144">x=0</label>
+			<label kind="synchronisation" x="25" y="-59">redMinor?</label>
+			<nail x="76" y="-42"/>
 		</transition>
 		<transition>
-			<source ref="id2"/>
-			<target ref="id3"/>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="-153" y="-59">vehicle!</label>
+			<nail x="-136" y="-51"/>
+		</transition>
+	</template>
+	<template>
+		<name>MinorRoadSemaphore</name>
+		<declaration>clock x;</declaration>
+		<location id="id2" x="34" y="-178" color="#ff0000">
+			<name x="24" y="-212">Red</name>
+		</location>
+		<location id="id3" x="-161" y="68" color="#00ff00">
+			<name x="-171" y="34">Green</name>
+			<label kind="invariant" x="-229" y="59">x&lt;=25</label>
+		</location>
+		<location id="id4" x="221" y="76" color="#ffff00">
+			<name x="211" y="42">Yellow</name>
+			<label kind="invariant" x="211" y="93">x&lt;=5</label>
+		</location>
+		<location id="id5" x="221" y="-127">
+			<label kind="invariant" x="238" y="-136">x&lt;=1</label>
+		</location>
+		<location id="id6" x="-161" y="-119">
+			<label kind="invariant" x="-221" y="-127">x&lt;=1</label>
+		</location>
+		<location id="id7" x="34" y="136">
+			<label kind="invariant" x="24" y="153">x&lt;=1</label>
+		</location>
+		<init ref="id2"/>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id2"/>
+			<label kind="guard" x="119" y="-204">x&gt;=1</label>
+			<label kind="synchronisation" x="85" y="-144">redMinor?</label>
+			<label kind="assignment" x="136" y="-178">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id5"/>
 			<label kind="guard" x="221" y="-59">x&gt;=5</label>
 			<label kind="assignment" x="221" y="-25">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id5"/>
-			<target ref="id2"/>
+			<source ref="id7"/>
+			<target ref="id4"/>
 			<label kind="guard" x="102" y="85">x&gt;=1</label>
 			<label kind="assignment" x="110" y="119">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id1"/>
-			<target ref="id5"/>
-			<label kind="guard" x="-85" y="76">x&gt;=25</label>
+			<source ref="id3"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-144" y="102">x&gt;=25</label>
 			<label kind="assignment" x="-85" y="110">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id4"/>
-			<target ref="id1"/>
+			<source ref="id6"/>
+			<target ref="id3"/>
 			<label kind="guard" x="-221" y="-68">x&gt;=1</label>
 			<label kind="assignment" x="-221" y="-42">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id0"/>
-			<target ref="id4"/>
+			<source ref="id2"/>
+			<target ref="id6"/>
+			<label kind="synchronisation" x="-102" y="-136">changeTraffic?</label>
 			<label kind="assignment" x="-93" y="-170">x=0</label>
 		</transition>
 	</template>
@@ -67,69 +95,73 @@
 		<declaration>// Place local declarations here.
 
 clock x;</declaration>
-		<location id="id6" x="-25" y="-306" color="#00ff00">
+		<location id="id8" x="-25" y="-306" color="#00ff00">
 			<name x="-35" y="-340">Green</name>
 		</location>
-		<location id="id7" x="-195" y="-17" color="#ffff00">
+		<location id="id9" x="-195" y="-17" color="#ffff00">
 			<name x="-255" y="-34">Yellow</name>
 			<label kind="invariant" x="-263" y="-17">x &lt;= 5</label>
 		</location>
-		<location id="id8" x="144" y="-17" color="#ff0000">
+		<location id="id10" x="144" y="-17" color="#ff0000">
 			<name x="144" y="-42">Red</name>
 			<label kind="invariant" x="170" y="-17">x &lt;= 25</label>
 		</location>
-		<location id="id9" x="-195" y="-229">
+		<location id="id11" x="-195" y="-229">
 			<label kind="invariant" x="-255" y="-238">x&lt;=1</label>
 		</location>
-		<location id="id10" x="-8" y="68">
+		<location id="id12" x="-8" y="68">
 			<label kind="invariant" x="-18" y="85">x &lt;=1</label>
 		</location>
-		<location id="id11" x="144" y="-238">
+		<location id="id13" x="144" y="-238">
 			<label kind="invariant" x="170" y="-246">x&lt;=1</label>
 		</location>
-		<init ref="id6"/>
+		<init ref="id8"/>
 		<transition>
-			<source ref="id11"/>
-			<target ref="id6"/>
+			<source ref="id13"/>
+			<target ref="id8"/>
 			<label kind="guard" x="51" y="-297">x&gt;=1</label>
 			<label kind="assignment" x="42" y="-272">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id8"/>
-			<target ref="id11"/>
+			<source ref="id10"/>
+			<target ref="id13"/>
 			<label kind="guard" x="153" y="-153">x&gt;=25</label>
+			<label kind="synchronisation" x="68" y="-144">redMinor!</label>
 			<label kind="assignment" x="161" y="-119">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id10"/>
-			<target ref="id8"/>
+			<source ref="id12"/>
+			<target ref="id10"/>
 			<label kind="guard" x="34" y="8">x&gt;=1</label>
 			<label kind="assignment" x="51" y="34">x= 0</label>
 		</transition>
 		<transition>
-			<source ref="id7"/>
-			<target ref="id10"/>
-			<label kind="guard" x="-102" y="8">x&gt;=5</label>
-			<label kind="assignment" x="-110" y="34">x=0</label>
+			<source ref="id9"/>
+			<target ref="id12"/>
+			<label kind="guard" x="-136" y="-17">x&gt;=5</label>
+			<label kind="synchronisation" x="-178" y="34">changeTraffic!</label>
+			<label kind="assignment" x="-85" y="8">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id9"/>
-			<target ref="id7"/>
+			<source ref="id11"/>
+			<target ref="id9"/>
 			<label kind="guard" x="-255" y="-136">x&gt;=1</label>
 			<label kind="assignment" x="-238" y="-110">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id6"/>
-			<target ref="id9"/>
+			<source ref="id8"/>
+			<target ref="id11"/>
 			<label kind="guard" x="-136" y="-306">x&gt;=30</label>
+			<label kind="synchronisation" x="-110" y="-263">vehicle?</label>
 			<label kind="assignment" x="-144" y="-280">x=0</label>
 		</transition>
 	</template>
 	<system>// Place template instantiations here.
 MajorRoad = MainRoadSemaphore();
 MinorRoad = MinorRoadSemaphore();
+sensor = Sensor();
 // List one or more processes to be composed into a system.
-system MajorRoad, MinorRoad;
+system MajorRoad, MinorRoad, sensor;
     </system>
 	<queries>
 		<query>
