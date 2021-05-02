@@ -3,190 +3,325 @@
 <nta>
 	<declaration>// Place global declarations here.
 
-broadcast chan sensorVehicleOff;
+//const int N=2;
 
-chan closeMinorRoad, openMinorRoad, sensorVehicleOn;
-</declaration>
+//typedef int [0, N-1] id_t;
+
+broadcast chan closeMinorRoad, sensorVehicleOff;
+
+chan openMinorRoad, sensorVehicleOn;</declaration>
 	<template>
-		<name>Sensor</name>
-		<location id="id0" x="-34" y="-136">
-			<name x="-44" y="-170">On</name>
-		</location>
-		<location id="id1" x="-34" y="51">
-			<name x="-44" y="17">Off</name>
-		</location>
-		<init ref="id0"/>
-		<transition>
-			<source ref="id1"/>
-			<target ref="id0"/>
-			<label kind="synchronisation" x="76" y="-85">sensorVehicleOn?</label>
-			<nail x="76" y="-42"/>
-		</transition>
-		<transition>
-			<source ref="id0"/>
-			<target ref="id1"/>
-			<label kind="synchronisation" x="-238" y="-25">sensorVehicleOff!</label>
-			<nail x="-136" y="-51"/>
-		</transition>
-	</template>
-	<template>
-		<name>MinorRoadSemaphore</name>
+		<name>MainRoadLigth2</name>
 		<declaration>clock x;</declaration>
-		<location id="id2" x="34" y="-178" color="#ff0000">
-			<name x="24" y="-212">Red</name>
-		</location>
-		<location id="id3" x="-161" y="68" color="#00ff00">
-			<name x="-171" y="34">Green</name>
-			<label kind="invariant" x="-229" y="59">x&lt;=25</label>
-		</location>
-		<location id="id4" x="221" y="76" color="#ffff00">
-			<name x="211" y="42">Yellow</name>
-			<label kind="invariant" x="211" y="93">x&lt;=5</label>
-		</location>
-		<location id="id5" x="221" y="-127">
-			<name x="211" y="-161">YellowRed</name>
-			<label kind="invariant" x="238" y="-136">x&lt;=1</label>
-		</location>
-		<location id="id6" x="-161" y="-119">
-			<name x="-171" y="-153">RedGreen</name>
-			<label kind="invariant" x="-221" y="-127">x&lt;=1</label>
-		</location>
-		<location id="id7" x="34" y="136">
-			<name x="24" y="102">GreenYellow</name>
-			<label kind="invariant" x="24" y="153">x&lt;=1</label>
-		</location>
-		<init ref="id2"/>
-		<transition>
-			<source ref="id5"/>
-			<target ref="id2"/>
-			<label kind="guard" x="119" y="-204">x&gt;=1</label>
-			<label kind="synchronisation" x="85" y="-144">closeMinorRoad!</label>
-			<label kind="assignment" x="136" y="-178">x=0</label>
-		</transition>
-		<transition>
-			<source ref="id4"/>
-			<target ref="id5"/>
-			<label kind="guard" x="221" y="-59">x&gt;=5</label>
-			<label kind="assignment" x="221" y="-25">x=0</label>
-		</transition>
-		<transition>
-			<source ref="id7"/>
-			<target ref="id4"/>
-			<label kind="guard" x="102" y="85">x&gt;=1</label>
-			<label kind="assignment" x="110" y="119">x=0</label>
-		</transition>
-		<transition>
-			<source ref="id3"/>
-			<target ref="id7"/>
-			<label kind="guard" x="-144" y="102">x&gt;=25</label>
-			<label kind="assignment" x="-85" y="110">x=0</label>
-		</transition>
-		<transition>
-			<source ref="id6"/>
-			<target ref="id3"/>
-			<label kind="guard" x="-221" y="-68">x&gt;=1</label>
-			<label kind="assignment" x="-221" y="-42">x=0</label>
-		</transition>
-		<transition>
-			<source ref="id2"/>
-			<target ref="id6"/>
-			<label kind="synchronisation" x="-102" y="-136">openMinorRoad?</label>
-			<label kind="assignment" x="-93" y="-170">x=0</label>
-		</transition>
-	</template>
-	<template>
-		<name x="5" y="5">MainRoadSemaphore</name>
-		<declaration>// Place local declarations here.
-
-clock x;
-
-</declaration>
-		<location id="id8" x="-25" y="-306" color="#00ff00">
+		<location id="id0" x="-25" y="-306" color="#00ff00">
 			<name x="-35" y="-340">Green</name>
 		</location>
-		<location id="id9" x="-195" y="-17" color="#ffff00">
-			<name x="-255" y="-34">Yellow</name>
-			<label kind="invariant" x="-263" y="-17">x &lt;= 5</label>
-		</location>
-		<location id="id10" x="144" y="-17" color="#ff0000">
-			<name x="144" y="-42">Red</name>
-		</location>
-		<location id="id11" x="-238" y="-187">
-			<name x="-238" y="-179">GreenYellow</name>
-			<label kind="invariant" x="-298" y="-196">x&lt;=1</label>
-		</location>
-		<location id="id12" x="-8" y="68">
-			<name x="-102" y="59">YellowRed</name>
-			<label kind="invariant" x="-18" y="85">x &lt;=1</label>
-		</location>
-		<location id="id13" x="144" y="-238">
-			<name x="134" y="-272">RedGreen</name>
-			<label kind="invariant" x="170" y="-246">x&lt;=1</label>
-		</location>
-		<location id="id14" x="-204" y="-289">
+		<location id="id1" x="-204" y="-289">
 			<name x="-314" y="-314">GreenCompleting30sec</name>
 			<label kind="invariant" x="-272" y="-297">x&lt;=30</label>
 		</location>
-		<init ref="id8"/>
+		<location id="id2" x="-238" y="-187">
+			<name x="-238" y="-179">GreenYellow</name>
+			<label kind="invariant" x="-298" y="-196">x&lt;=1</label>
+		</location>
+		<location id="id3" x="144" y="-238">
+			<name x="134" y="-272">RedGreen</name>
+			<label kind="invariant" x="170" y="-246">x&lt;=1</label>
+		</location>
+		<location id="id4" x="144" y="-17" color="#ff0000">
+			<name x="144" y="-42">Red</name>
+		</location>
+		<location id="id5" x="-8" y="68">
+			<name x="-102" y="59">YellowRed</name>
+			<label kind="invariant" x="-18" y="85">x &lt;=1</label>
+		</location>
+		<location id="id6" x="-195" y="-17" color="#ffff00">
+			<name x="-255" y="-34">Yellow</name>
+			<label kind="invariant" x="-263" y="-17">x &lt;= 5</label>
+		</location>
+		<init ref="id0"/>
 		<transition>
-			<source ref="id8"/>
-			<target ref="id14"/>
+			<source ref="id0"/>
+			<target ref="id1"/>
 			<label kind="guard" x="-161" y="-331">x&lt;=30</label>
 			<label kind="synchronisation" x="-204" y="-357">sensorVehicleOff?</label>
 		</transition>
 		<transition>
-			<source ref="id14"/>
-			<target ref="id11"/>
+			<source ref="id1"/>
+			<target ref="id2"/>
 			<label kind="guard" x="-272" y="-246">x&gt;=30</label>
 			<label kind="assignment" x="-212" y="-246">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id8"/>
-			<target ref="id11"/>
+			<source ref="id0"/>
+			<target ref="id2"/>
 			<label kind="guard" x="-93" y="-221">x&gt;30</label>
 			<label kind="synchronisation" x="-110" y="-255">sensorVehicleOff?</label>
 			<label kind="assignment" x="-110" y="-195">x=0</label>
 			<nail x="-85" y="-187"/>
 		</transition>
 		<transition>
-			<source ref="id13"/>
+			<source ref="id3"/>
+			<target ref="id0"/>
+			<label kind="guard" x="51" y="-297">x&gt;=1</label>
+			<label kind="assignment" x="34" y="-263">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="153" y="-170">closeMinorRoad?</label>
+			<label kind="assignment" x="161" y="-119">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id4"/>
+			<label kind="guard" x="76" y="25">x&gt;=1</label>
+			<label kind="assignment" x="42" y="51">x= 0</label>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id5"/>
+			<label kind="guard" x="-136" y="-17">x&gt;=5</label>
+			<label kind="assignment" x="-85" y="8">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id6"/>
+			<label kind="guard" x="-255" y="-136">x&gt;=1</label>
+			<label kind="assignment" x="-238" y="-110">x=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>Sensor</name>
+		<declaration>//id_t list[N+1];
+
+//int [0,N] len;
+
+
+//clock x;
+
+//Put an element at the end of queue
+/*id_t enqueue(id_t elem) {
+    list[len++]=elem;
+    return elem;
+}
+
+//Clean list
+void clean() {
+     int i = 0;
+     while(i &lt; len) {
+        list[i] = 0;
+        i++;
+    }
+    
+    list[i]=0;
+    len = 0;
+
+}
+
+
+//Remove front element of the queue
+void dequeue() {
+    int i= 0;
+    len -= 1;
+    
+    while(i &lt; len) {
+        list[i] = list[i +1];
+        i++;
+    }
+    
+    list[i]=0;
+}
+
+//returns the first element
+id_t first() {
+    return list[0];
+}
+
+
+//returns the last element
+id_t last() {
+    return list[len-1];
+}*/</declaration>
+		<location id="id7" x="-51" y="-195">
+			<name x="-61" y="-229">On</name>
+		</location>
+		<location id="id8" x="-59" y="42">
+			<name x="-69" y="8">Off</name>
+		</location>
+		<init ref="id7"/>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id7"/>
+			<label kind="synchronisation" x="-41" y="-34">sensorVehicleOn?</label>
+			<nail x="68" y="-76"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
 			<target ref="id8"/>
+			<label kind="synchronisation" x="-229" y="-76">sensorVehicleOff!</label>
+			<nail x="-170" y="-68"/>
+		</transition>
+	</template>
+	<template>
+		<name>MinorRoad</name>
+		<declaration>clock x;</declaration>
+		<location id="id9" x="34" y="-178" color="#ff0000">
+			<name x="24" y="-212">Red</name>
+		</location>
+		<location id="id10" x="-161" y="68" color="#00ff00">
+			<name x="-171" y="34">Green</name>
+			<label kind="invariant" x="-229" y="59">x&lt;=25</label>
+		</location>
+		<location id="id11" x="221" y="76" color="#ffff00">
+			<name x="211" y="42">Yellow</name>
+			<label kind="invariant" x="211" y="93">x&lt;=5</label>
+		</location>
+		<location id="id12" x="221" y="-127">
+			<name x="211" y="-161">YellowRed</name>
+			<label kind="invariant" x="238" y="-136">x&lt;=1</label>
+		</location>
+		<location id="id13" x="-161" y="-119">
+			<name x="-171" y="-153">RedGreen</name>
+			<label kind="invariant" x="-221" y="-127">x&lt;=1</label>
+		</location>
+		<location id="id14" x="34" y="136">
+			<name x="24" y="102">GreenYellow</name>
+			<label kind="invariant" x="24" y="153">x&lt;=1</label>
+		</location>
+		<init ref="id9"/>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id9"/>
+			<label kind="guard" x="119" y="-204">x&gt;=1</label>
+			<label kind="synchronisation" x="85" y="-144">closeMinorRoad!</label>
+			<label kind="assignment" x="136" y="-178">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id12"/>
+			<label kind="guard" x="221" y="-59">x&gt;=5</label>
+			<label kind="assignment" x="221" y="-25">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id11"/>
+			<label kind="guard" x="102" y="85">x&gt;=1</label>
+			<label kind="assignment" x="110" y="119">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id14"/>
+			<label kind="guard" x="-144" y="102">x&gt;=25</label>
+			<label kind="assignment" x="-85" y="110">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id10"/>
+			<label kind="guard" x="-221" y="-68">x&gt;=1</label>
+			<label kind="assignment" x="-221" y="-42">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="-102" y="-136">openMinorRoad?</label>
+			<label kind="assignment" x="-93" y="-170">x=0</label>
+		</transition>
+	</template>
+	<template>
+		<name x="5" y="5">MainRoadLigth1</name>
+		<declaration>// Place local declarations here.
+
+clock x;
+
+</declaration>
+		<location id="id15" x="-25" y="-306" color="#00ff00">
+			<name x="-35" y="-340">Green</name>
+		</location>
+		<location id="id16" x="-195" y="-17" color="#ffff00">
+			<name x="-255" y="-34">Yellow</name>
+			<label kind="invariant" x="-263" y="-17">x &lt;= 5</label>
+		</location>
+		<location id="id17" x="144" y="-17" color="#ff0000">
+			<name x="144" y="-42">Red</name>
+		</location>
+		<location id="id18" x="-238" y="-187">
+			<name x="-238" y="-179">GreenYellow</name>
+			<label kind="invariant" x="-298" y="-196">x&lt;=1</label>
+		</location>
+		<location id="id19" x="-8" y="68">
+			<name x="-102" y="59">YellowRed</name>
+			<label kind="invariant" x="-18" y="85">x &lt;=1</label>
+		</location>
+		<location id="id20" x="144" y="-238">
+			<name x="134" y="-272">RedGreen</name>
+			<label kind="invariant" x="170" y="-246">x&lt;=1</label>
+		</location>
+		<location id="id21" x="-204" y="-289">
+			<name x="-314" y="-314">GreenCompleting30sec</name>
+			<label kind="invariant" x="-272" y="-297">x&lt;=30</label>
+		</location>
+		<init ref="id15"/>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id21"/>
+			<label kind="guard" x="-161" y="-331">x&lt;=30</label>
+			<label kind="synchronisation" x="-204" y="-357">sensorVehicleOff?</label>
+		</transition>
+		<transition>
+			<source ref="id21"/>
+			<target ref="id18"/>
+			<label kind="guard" x="-272" y="-246">x&gt;=30</label>
+			<label kind="assignment" x="-212" y="-246">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id18"/>
+			<label kind="guard" x="-93" y="-221">x&gt;30</label>
+			<label kind="synchronisation" x="-110" y="-255">sensorVehicleOff?</label>
+			<label kind="assignment" x="-110" y="-195">x=0</label>
+			<nail x="-85" y="-187"/>
+		</transition>
+		<transition>
+			<source ref="id20"/>
+			<target ref="id15"/>
 			<label kind="guard" x="51" y="-297">x&gt;=1</label>
 			<label kind="synchronisation" x="42" y="-323">sensorVehicleOn!</label>
 			<label kind="assignment" x="34" y="-263">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id10"/>
-			<target ref="id13"/>
+			<source ref="id17"/>
+			<target ref="id20"/>
 			<label kind="synchronisation" x="153" y="-170">closeMinorRoad?</label>
 			<label kind="assignment" x="161" y="-119">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id12"/>
-			<target ref="id10"/>
+			<source ref="id19"/>
+			<target ref="id17"/>
 			<label kind="guard" x="76" y="25">x&gt;=1</label>
 			<label kind="synchronisation" x="-8" y="-8">openMinorRoad!</label>
 			<label kind="assignment" x="42" y="51">x= 0</label>
 		</transition>
 		<transition>
-			<source ref="id9"/>
-			<target ref="id12"/>
+			<source ref="id16"/>
+			<target ref="id19"/>
 			<label kind="guard" x="-136" y="-17">x&gt;=5</label>
 			<label kind="assignment" x="-85" y="8">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id11"/>
-			<target ref="id9"/>
+			<source ref="id18"/>
+			<target ref="id16"/>
 			<label kind="guard" x="-255" y="-136">x&gt;=1</label>
 			<label kind="assignment" x="-238" y="-110">x=0</label>
 		</transition>
 	</template>
 	<system>// Place template instantiations here.
-MajorRoad = MainRoadSemaphore();
-MinorRoad = MinorRoadSemaphore();
+MajorRoad1 = MainRoadLigth1();
+MajorRoad2 = MainRoadLigth2();
+MinorRoad1 = MinorRoad();
 SensorMinorRoad = Sensor();
 // List one or more processes to be composed into a system.
-system MajorRoad, MinorRoad, SensorMinorRoad;
+system MajorRoad1, MajorRoad2, MinorRoad1, SensorMinorRoad;
     </system>
 	<queries>
 		<query>
