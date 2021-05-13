@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+
+bool redMain = false, redMinor= true;
+
+bool hTMinor=false, lTMinor=false, noTMinor= true, hTMain=true, lTMain=false, noTMain=false;
+
+
+chan openMinorRoad, closeMinorRoad, openMainRoad, closeMainRoad;
+
+broadcast chan changedLightMain, changedLightMinor;
+
+
+clock t;</declaration>
+	<template>
+		<name>SensorMainRoad</name>
+		<location id="id0" x="365" y="119">
+			<name x="391" y="111">Low</name>
+		</location>
+		<location id="id1" x="8" y="-272">
+			<name x="-2" y="-306">Non_existence</name>
+		</location>
+		<location id="id2" x="-323" y="110">
+			<name x="-382" y="101">High</name>
+		</location>
+		<init ref="id2"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="guard" x="306" y="-76">redMinor==true</label>
+			<label kind="assignment" x="272" y="-161">hTMain=false, 
+lTMain=false, 
+noTMain=true</label>
+			<nail x="246" y="-144"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="assignment" x="26" y="-165">hTMain=false, 
+lTMain=true, 
+noTMain=false</label>
+			<nail x="127" y="-59"/>
+		</transition>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id2"/>
+			<label kind="assignment" x="-34" y="187">hTMain=true, 
+lTMain=false, 
+noTMain=false</label>
+			<nail x="8" y="187"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id0"/>
+			<label kind="guard" x="-85" y="68">redMinor==true</label>
+			<label kind="assignment" x="51" y="42">hTMain=false, 
+lTMain=true, 
+noTMain=false</label>
+			<nail x="0" y="51"/>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-272" y="-221">redMinor==true</label>
+			<label kind="assignment" x="-323" y="-161">noTMain=true, 
+hTMain=false,
+lTMain=false</label>
+			<nail x="-255" y="-136"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<label kind="assignment" x="-144" y="-93">hTMain=true, 
+lTMain=false, 
+noTMain=false</label>
+			<nail x="-93" y="-51"/>
+		</transition>
+	</template>
+	<template>
+		<name>SensorMinorRoad</name>
+		<location id="id3" x="365" y="119">
+			<name x="391" y="111">Low</name>
+		</location>
+		<location id="id4" x="8" y="-272">
+			<name x="-2" y="-306">Non_existence</name>
+		</location>
+		<location id="id5" x="-323" y="110">
+			<name x="-382" y="101">High</name>
+		</location>
+		<init ref="id4"/>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id4"/>
+			<label kind="guard" x="306" y="-76">redMain==true</label>
+			<label kind="assignment" x="272" y="-161">hTMinor=false, 
+lTMinor=false, 
+noTMinor=true</label>
+			<nail x="246" y="-144"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id3"/>
+			<label kind="assignment" x="26" y="-165">hTMinor=false, 
+lTMinor=true, 
+noTMinor=false</label>
+			<nail x="127" y="-59"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id5"/>
+			<label kind="assignment" x="-34" y="187">hTMinor=true, 
+lTMinor=false, 
+noTMinor=false</label>
+			<nail x="8" y="187"/>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id3"/>
+			<label kind="guard" x="-85" y="68">redMain==true</label>
+			<label kind="assignment" x="51" y="42">hTMinor=false, 
+lTMinor=true, 
+noTMinor=false</label>
+			<nail x="0" y="51"/>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id4"/>
+			<label kind="guard" x="-272" y="-221">redMain==true</label>
+			<label kind="assignment" x="-323" y="-161">noTMinor=true, 
+hTMinor=false,
+lTMinor=false</label>
+			<nail x="-255" y="-136"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id5"/>
+			<label kind="assignment" x="-144" y="-93">hTMinor=true, 
+lTMinor=false, 
+noTMinor=false</label>
+			<nail x="-93" y="-51"/>
+		</transition>
+	</template>
+	<template>
+		<name>TrafficController</name>
+		<declaration>clock y;</declaration>
+		<location id="id6" x="212" y="-119">
+			<name x="202" y="-153">MinorRoadRed</name>
+			<urgent/>
+		</location>
+		<location id="id7" x="-306" y="8">
+			<name x="-316" y="-26">MainRoadYellow</name>
+			<label kind="invariant" x="-382" y="8">y &gt;= 0</label>
+		</location>
+		<location id="id8" x="-153" y="-119">
+			<name x="-212" y="-153">MainRoadGreen</name>
+			<label kind="invariant" x="-163" y="-102">y &gt;= 0</label>
+		</location>
+		<location id="id9" x="348" y="0">
+			<name x="338" y="-34">MinorRoadYellow</name>
+			<label kind="invariant" x="374" y="0">y &gt;= 0</label>
+		</location>
+		<location id="id10" x="221" y="127">
+			<name x="211" y="93">MinorRoadGreen</name>
+			<label kind="invariant" x="211" y="144">y &gt;= 0</label>
+		</location>
+		<location id="id11" x="-161" y="127">
+			<name x="-171" y="93">MainRoadRed</name>
+			<urgent/>
+		</location>
+		<init ref="id8"/>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="-85" y="-110">openMainRoad!</label>
+		</transition>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id6"/>
+			<label kind="synchronisation" x="230" y="-76">changedLightMinor?</label>
+			<label kind="assignment" x="230" y="-59">y = 0</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id9"/>
+			<label kind="guard" x="272" y="25">(hTMain== true and lTMinor==true) or
+(hTMain==true and noTMinor==true) or
+(lTMain==true and noTMinor==true)</label>
+			<label kind="synchronisation" x="374" y="93">closeMinorRoad!</label>
+			<label kind="assignment" x="229" y="51">y = 0</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id10"/>
+			<label kind="synchronisation" x="-34" y="93">openMinorRoad!</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id11"/>
+			<label kind="synchronisation" x="-288" y="50">changedLightMain?</label>
+			<label kind="assignment" x="-288" y="67">y = 0</label>
+		</transition>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id7"/>
+			<label kind="guard" x="-501" y="-119">(hTMinor== true and lTMain==true) or
+(hTMinor==true and noTMain==true) or
+(lTMinor==true and noTMain==true)</label>
+			<label kind="synchronisation" x="-374" y="-59">closeMainRoad!</label>
+			<label kind="assignment" x="-288" y="-55">y = 0</label>
+		</transition>
+	</template>
+	<template>
+		<name>MinorRoad</name>
+		<declaration>clock x;</declaration>
+		<location id="id12" x="-34" y="-255" color="#ff0000">
+			<name x="-44" y="-289">Red</name>
+			<label kind="invariant" x="-68" y="-314">x &gt;= 0</label>
+		</location>
+		<location id="id13" x="-161" y="68" color="#00ff00">
+			<name x="-171" y="34">Green</name>
+		</location>
+		<location id="id14" x="221" y="76" color="#ffff00">
+			<name x="211" y="42">Yellow</name>
+			<label kind="invariant" x="211" y="93">x&lt;=5</label>
+		</location>
+		<location id="id15" x="263" y="-102">
+			<name x="253" y="-136">YellowRed</name>
+			<label kind="invariant" x="280" y="-111">x&lt;=1</label>
+		</location>
+		<location id="id16" x="-238" y="-212">
+			<name x="-248" y="-246">RedGreen</name>
+			<label kind="invariant" x="-298" y="-220">x&lt;=1</label>
+		</location>
+		<location id="id17" x="34" y="136">
+			<name x="24" y="102">GreenYellow</name>
+			<label kind="invariant" x="24" y="153">x&lt;=1</label>
+		</location>
+		<location id="id18" x="-348" y="-314">
+			<name x="-358" y="-348">test</name>
+		</location>
+		<location id="id19" x="195" y="-238">
+			<committed/>
+		</location>
+		<init ref="id12"/>
+		<transition>
+			<source ref="id16"/>
+			<target ref="id13"/>
+			<label kind="guard" x="-220" y="-106">x&gt;=1</label>
+			<label kind="assignment" x="-220" y="-72">x=0, redMinor=false</label>
+		</transition>
+		<transition>
+			<source ref="id19"/>
+			<target ref="id12"/>
+			<label kind="synchronisation" x="17" y="-272">changedLightMinor!</label>
+			<label kind="assignment" x="-16" y="-246">redMinor=true</label>
+		</transition>
+		<transition>
+			<source ref="id15"/>
+			<target ref="id19"/>
+			<label kind="guard" x="213" y="-204">x&gt;=1</label>
+			<label kind="assignment" x="213" y="-170">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id14"/>
+			<target ref="id15"/>
+			<label kind="guard" x="221" y="-59">x&gt;=5</label>
+			<label kind="assignment" x="221" y="-25">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id17"/>
+			<target ref="id14"/>
+			<label kind="guard" x="102" y="85">x&gt;=1</label>
+			<label kind="assignment" x="110" y="119">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id17"/>
+			<label kind="synchronisation" x="-143" y="85">closeMinorRoad?</label>
+			<label kind="assignment" x="-85" y="110">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id16"/>
+			<label kind="synchronisation" x="-187" y="-229">openMinorRoad?</label>
+			<label kind="assignment" x="-161" y="-263">x=0</label>
+		</transition>
+	</template>
+	<template>
+		<name x="5" y="5">MainRoad</name>
+		<declaration>// Place local declarations here.
+
+clock x;
+
+</declaration>
+		<location id="id20" x="-68" y="-391" color="#00ff00">
+			<name x="-78" y="-425">Green</name>
+			<label kind="invariant" x="-78" y="-374">x &gt;= 0</label>
+		</location>
+		<location id="id21" x="-323" y="8" color="#ffff00">
+			<name x="-383" y="-9">Yellow</name>
+			<label kind="invariant" x="-391" y="8">x &lt;= 5</label>
+		</location>
+		<location id="id22" x="212" y="-76" color="#ff0000">
+			<name x="221" y="-110">Red</name>
+			<label kind="invariant" x="238" y="-85">x &gt;= 0</label>
+		</location>
+		<location id="id23" x="-323" y="-297">
+			<name x="-306" y="-289">GreenYellow</name>
+			<label kind="invariant" x="-383" y="-306">x&lt;=1</label>
+		</location>
+		<location id="id24" x="-68" y="76">
+			<name x="-162" y="67">YellowRed</name>
+			<label kind="invariant" x="-78" y="93">x &lt;=1</label>
+		</location>
+		<location id="id25" x="187" y="-255">
+			<name x="177" y="-289">RedGreen</name>
+			<label kind="invariant" x="213" y="-263">x&lt;=1</label>
+		</location>
+		<location id="id26" x="-382" y="-442">
+			<name x="-392" y="-476">test</name>
+		</location>
+		<location id="id27" x="170" y="42">
+			<committed/>
+		</location>
+		<init ref="id20"/>
+		<transition>
+			<source ref="id25"/>
+			<target ref="id20"/>
+			<label kind="guard" x="-50" y="-357">x&gt;=1</label>
+			<label kind="assignment" x="-50" y="-323">x=0, redMain=false</label>
+		</transition>
+		<transition>
+			<source ref="id27"/>
+			<target ref="id22"/>
+			<label kind="synchronisation" x="204" y="-25">changedLightMain!</label>
+			<label kind="assignment" x="204" y="0">redMain=true</label>
+		</transition>
+		<transition>
+			<source ref="id24"/>
+			<target ref="id27"/>
+			<label kind="guard" x="34" y="34">x&gt;=1</label>
+			<label kind="assignment" x="-17" y="68">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id20"/>
+			<target ref="id23"/>
+			<label kind="synchronisation" x="-221" y="-331">closeMainRoad?</label>
+			<label kind="assignment" x="-221" y="-382">x=0</label>
+			<nail x="-187" y="-348"/>
+		</transition>
+		<transition>
+			<source ref="id22"/>
+			<target ref="id25"/>
+			<label kind="synchronisation" x="204" y="-195">openMainRoad?</label>
+			<label kind="assignment" x="212" y="-170">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id21"/>
+			<target ref="id24"/>
+			<label kind="guard" x="-238" y="8">x&gt;=5</label>
+			<label kind="assignment" x="-272" y="42">x=0</label>
+		</transition>
+		<transition>
+			<source ref="id23"/>
+			<target ref="id21"/>
+			<label kind="guard" x="-391" y="-204">x&gt;=1</label>
+			<label kind="assignment" x="-391" y="-178">x=0</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+
+// List one or more processes to be composed into a system.
+system MainRoad, MinorRoad, SensorMainRoad, SensorMinorRoad, TrafficController;
+    </system>
+	<queries>
+		<query>
+			<formula>!MinorRoad.Red --&gt; MinorRoad.Red</formula>
+			<comment>If minor-road light is not red eventually will become red.</comment>
+		</query>
+		<query>
+			<formula>MainRoad.GreenYellow or MainRoad.GreenCompleting30sec --&gt; MainRoad.Green</formula>
+			<comment>If the main-road light change from green eventually will become green again.</comment>
+		</query>
+		<query>
+			<formula>Sensor.Off --&gt; !MainRoad.Green</formula>
+			<comment>The green lights on the major-road will eventually change</comment>
+		</query>
+		<query>
+			<formula>Sensor.Off &amp;&amp; !MainRoad.Red &amp;&amp; !MainRoad.RedGreen --&gt; MinorRoad.Green</formula>
+			<comment>If there are cars waiting they will eventually have green light.</comment>
+		</query>
+		<query>
+			<formula>A[] MinorRoad.Green imply !MainRoad.Green</formula>
+			<comment>The minor-road and the major-road ligths cannot be green at the same time.</comment>
+		</query>
+		<query>
+			<formula>A[] not deadlock</formula>
+			<comment>The system never enters in a deadlock state.</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; MainRoad.Red</formula>
+			<comment>The major-road light can go red.</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; MinorRoad.Green</formula>
+			<comment>Minor-road light can go green.</comment>
+		</query>
+	</queries>
+</nta>
