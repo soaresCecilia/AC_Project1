@@ -277,10 +277,11 @@ y&gt;=30</label>
 		<declaration>clock x;</declaration>
 		<location id="id14" x="-8" y="-306" color="#ff0000">
 			<name x="-18" y="-340">Red</name>
-			<label kind="invariant" x="-42" y="-365">x &gt;= 0</label>
+			<label kind="invariant" x="-34" y="-289">x &gt;= 0</label>
 		</location>
 		<location id="id15" x="-229" y="76" color="#00ff00">
 			<name x="-239" y="42">Green</name>
+			<label kind="invariant" x="-263" y="93">x&gt;=0</label>
 		</location>
 		<location id="id16" x="238" y="76" color="#ffff00">
 			<name x="228" y="42">Yellow</name>
@@ -423,19 +424,19 @@ system MainRoad, MinorRoad, SensorMainRoad, SensorMinorRoad, TrafficController;
 	<queries>
 		<query>
 			<formula>A&lt;&gt; !MinorRoad.Red imply MinorRoad.Red</formula>
-			<comment>If minor-road's light is not red, it will eventually become red.
-(For all paths threre is, at least, one state where this is true).</comment>
+			<comment>If minor-road's light isn't red, it will eventually become red.
+</comment>
 		</query>
 		<query>
-			<formula>MinorRoad.Green and (TrafficController.y &lt; 30 ) --&gt; MinorRoad.Green</formula>
-			<comment>If minor-road is open for less then 30 units of time then it will be open until then.</comment>
+			<formula>A[] MinorRoad.Green and TrafficController.y &lt; 30 imply MainRoad.Red and (SensorMainRoad.High or !SensorMainRoad.High)</formula>
+			<comment>If minor-road is green for less then 30 units of time then it will be green until then even regardeless traffic level on major-road.</comment>
 		</query>
 		<query>
-			<formula>SensorMainRoad.High and MainRoad.Green and (TrafficController.y &lt; 60 ) --&gt; MainRoad.Green</formula>
+			<formula>A[] SensorMainRoad.High and MainRoad.Green and (TrafficController.y &lt; 60 ) imply MinorRoad.Red and (SensorMinorRoad.High or !SensorMinorRoad.High)</formula>
 			<comment>If there is high traffic in major-road and its green lights have been on, for less than 60 minutes, then it will remain green until then.</comment>
 		</query>
 		<query>
-			<formula>A&lt;&gt; (!SensorMinorRoad.Non_existence imply MinorRoad.Green) &amp; (!SensorMainRoad.Non_existence imply MainRoad.Green)</formula>
+			<formula>A&lt;&gt; ((!SensorMinorRoad.Non_existence imply MinorRoad.Green) &amp; (!SensorMainRoad.Non_existence imply MainRoad.Green))</formula>
 			<comment>If there are cars waiting they will eventually have green light.</comment>
 		</query>
 		<query>
@@ -455,15 +456,15 @@ system MainRoad, MinorRoad, SensorMainRoad, SensorMinorRoad, TrafficController;
 			<comment>Minor-road light can go green.</comment>
 		</query>
 		<query>
-			<formula>SensorMinorRoad.High and !SensorMainRoad.High and MainRoad.Green and TrafficController.y &gt;30 --&gt; !MainRoad.Green</formula>
-			<comment>If minor-road has high traffic and major don't and major-road is green then its lights will change.</comment>
+			<formula>SensorMinorRoad.High and !SensorMainRoad.High and MainRoad.Green and TrafficController.y &gt; 30 --&gt; MinorRoad.Green</formula>
+			<comment>If minor-road has high traffic and major don't and major-road is green for more than 30 units of time then its lights will change.</comment>
 		</query>
 		<query>
-			<formula>MinorRoad.Yellow and (MinorRoad.x &lt; 5) --&gt; MinorRoad.Yellow</formula>
+			<formula>MinorRoad.Yellow and (MinorRoad.x &gt; 5) --&gt; !MinorRoad.Yellow</formula>
 			<comment>Yellow ligth on minor-road stays on for 5 units of time.</comment>
 		</query>
 		<query>
-			<formula>MainRoad.Yellow and (MainRoad.x &lt; 5) --&gt; MainRoad.Yellow</formula>
+			<formula>MainRoad.Yellow and (MainRoad.x &gt; 5) --&gt; !MainRoad.Yellow</formula>
 			<comment>Yellow ligth on major-road stays on for 5 units of time.</comment>
 		</query>
 	</queries>
