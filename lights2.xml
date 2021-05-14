@@ -22,54 +22,24 @@ clock t;</declaration>
 		<declaration>clock z;</declaration>
 		<location id="id0" x="365" y="119">
 			<name x="391" y="111">Low</name>
-			<label kind="invariant" x="355" y="136">z&gt;=1</label>
 		</location>
 		<location id="id1" x="8" y="-272">
 			<name x="-2" y="-306">Non_existence</name>
-			<label kind="invariant" x="-2" y="-255">z&gt;=1</label>
 		</location>
 		<location id="id2" x="-323" y="110">
 			<name x="-382" y="101">High</name>
-			<label kind="invariant" x="-333" y="127">z&gt;=0</label>
 		</location>
 		<location id="id3" x="-680" y="-340">
 		</location>
 		<init ref="id2"/>
 		<transition>
 			<source ref="id0"/>
-			<target ref="id0"/>
-			<label kind="guard" x="353" y="170">redMain==true
-and
-redMinor==false</label>
-			<label kind="assignment" x="416" y="51">z=0</label>
-			<nail x="413" y="204"/>
-			<nail x="413" y="34"/>
-		</transition>
-		<transition>
-			<source ref="id1"/>
-			<target ref="id1"/>
-			<label kind="assignment" x="-58" y="-323">z=0</label>
-			<nail x="-76" y="-374"/>
-			<nail x="110" y="-365"/>
-		</transition>
-		<transition>
-			<source ref="id2"/>
-			<target ref="id2"/>
-			<label kind="guard" x="-518" y="51">redMain==true
-and
-redMinor==false
-and
-z&gt;=1</label>
-			<label kind="assignment" x="-373" y="63">z=0</label>
-			<nail x="-382" y="204"/>
-			<nail x="-391" y="17"/>
-		</transition>
-		<transition>
-			<source ref="id0"/>
 			<target ref="id1"/>
 			<label kind="guard" x="306" y="-76">redMinor==true
 and 
-redMain==false</label>
+redMain==false
+and
+z&gt;=1</label>
 			<label kind="assignment" x="272" y="-161">hTMain=false, 
 lTMain=false, 
 noTMain=true,
@@ -79,6 +49,7 @@ z=0</label>
 		<transition>
 			<source ref="id1"/>
 			<target ref="id0"/>
+			<label kind="guard" x="26" y="-199">z&gt;=1</label>
 			<label kind="assignment" x="26" y="-165">hTMain=false, 
 lTMain=true, 
 noTMain=false,
@@ -88,6 +59,7 @@ z=0</label>
 		<transition>
 			<source ref="id0"/>
 			<target ref="id2"/>
+			<label kind="guard" x="119" y="170">z&gt;=1</label>
 			<label kind="assignment" x="-34" y="187">hTMain=true, 
 lTMain=false, 
 noTMain=false,
@@ -97,7 +69,7 @@ z=0</label>
 		<transition>
 			<source ref="id2"/>
 			<target ref="id0"/>
-			<label kind="guard" x="-85" y="68">redMinor==true
+			<label kind="guard" x="-68" y="0">redMinor==true
 and 
 redMain==false
 and
@@ -124,7 +96,8 @@ z=0</label>
 		<transition>
 			<source ref="id1"/>
 			<target ref="id2"/>
-			<label kind="assignment" x="-144" y="-93">hTMain=true, 
+			<label kind="guard" x="-93" y="-161">z&gt;=1</label>
+			<label kind="assignment" x="-144" y="-110">hTMain=true, 
 lTMain=false, 
 noTMain=false,
 z=0</label>
@@ -136,51 +109,22 @@ z=0</label>
 		<declaration>clock z;</declaration>
 		<location id="id4" x="365" y="119">
 			<name x="391" y="111">Low</name>
-			<label kind="invariant" x="355" y="136">z&gt;=1</label>
 		</location>
 		<location id="id5" x="8" y="-272">
 			<name x="-2" y="-306">Non_existence</name>
-			<label kind="invariant" x="-2" y="-255">z&gt;=0</label>
 		</location>
 		<location id="id6" x="-323" y="110">
 			<name x="-382" y="101">High</name>
-			<label kind="invariant" x="-333" y="127">z&gt;=1</label>
 		</location>
 		<init ref="id5"/>
-		<transition>
-			<source ref="id4"/>
-			<target ref="id4"/>
-			<label kind="guard" x="442" y="93">redMinor==true
-and
-redMain==false</label>
-			<label kind="assignment" x="383" y="85">z=0</label>
-			<nail x="433" y="51"/>
-			<nail x="425" y="212"/>
-		</transition>
-		<transition>
-			<source ref="id5"/>
-			<target ref="id5"/>
-			<label kind="guard" x="-75" y="-335">z&gt;=1</label>
-			<label kind="assignment" x="-75" y="-301">z=0</label>
-			<nail x="-93" y="-331"/>
-			<nail x="110" y="-331"/>
-		</transition>
-		<transition>
-			<source ref="id6"/>
-			<target ref="id6"/>
-			<label kind="guard" x="-527" y="34">redMinor==false
-and
-redMain==true</label>
-			<label kind="assignment" x="-390" y="148">z=0</label>
-			<nail x="-408" y="187"/>
-			<nail x="-399" y="34"/>
-		</transition>
 		<transition>
 			<source ref="id4"/>
 			<target ref="id5"/>
 			<label kind="guard" x="306" y="-76">redMain==true
 and
-redMinor==false</label>
+redMinor==false
+and
+z&gt;=1</label>
 			<label kind="assignment" x="272" y="-161">hTMinor=false, 
 lTMinor=false, 
 noTMinor=true,
@@ -200,6 +144,7 @@ z=0</label>
 		<transition>
 			<source ref="id4"/>
 			<target ref="id6"/>
+			<label kind="guard" x="119" y="178">z&gt;=1</label>
 			<label kind="assignment" x="-34" y="187">hTMinor=true, 
 lTMinor=false, 
 noTMinor=false,
@@ -209,9 +154,11 @@ z=0</label>
 		<transition>
 			<source ref="id6"/>
 			<target ref="id4"/>
-			<label kind="guard" x="-68" y="68">redMain==true
+			<label kind="guard" x="-85" y="25">redMain==true
 and
-redMinor==false</label>
+redMinor==false
+and
+z&gt;=1</label>
 			<label kind="assignment" x="51" y="42">hTMinor=false, 
 lTMinor=true, 
 noTMinor=false,
@@ -223,7 +170,9 @@ z=0</label>
 			<target ref="id5"/>
 			<label kind="guard" x="-272" y="-221">redMain==true
 and
-redMinor==false</label>
+redMinor==false
+and 
+z&gt;=1</label>
 			<label kind="assignment" x="-314" y="-102">noTMinor=true, 
 hTMinor=false,
 lTMinor=false,
@@ -254,7 +203,7 @@ z=0</label>
 		</location>
 		<location id="id9" x="-153" y="-119">
 			<name x="-212" y="-153">MainRoadGreen</name>
-			<label kind="invariant" x="-163" y="-102">y &gt;= 0</label>
+			<label kind="invariant" x="-221" y="-127">y &gt;= 0</label>
 		</location>
 		<location id="id10" x="348" y="0">
 			<name x="338" y="-34">MinorRoadYellow</name>
@@ -271,6 +220,17 @@ z=0</label>
 		<location id="id13" x="-518" y="-280">
 		</location>
 		<init ref="id9"/>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id8"/>
+			<label kind="guard" x="-545" y="-136">( (hTMinor== true and lTMain==true) or
+(hTMinor==true and noTMain==true) or
+(lTMinor==true and noTMain==true) ) and
+y&gt;=30</label>
+			<label kind="synchronisation" x="-357" y="-59">closeMainRoad!</label>
+			<label kind="assignment" x="-289" y="-76">y=0</label>
+			<nail x="-307" y="-68"/>
+		</transition>
 		<transition>
 			<source ref="id7"/>
 			<target ref="id9"/>
@@ -306,12 +266,10 @@ y&gt;=30</label>
 		<transition>
 			<source ref="id9"/>
 			<target ref="id8"/>
-			<label kind="guard" x="-493" y="-119">(hTMinor== true and lTMain==true) or
-(hTMinor==true and noTMain==true) or
-(lTMinor==true and noTMain==true) or
-(noTMinor==false and y &gt;=60)</label>
-			<label kind="synchronisation" x="-204" y="-59">closeMainRoad!</label>
-			<label kind="assignment" x="-187" y="-42">y = 0</label>
+			<label kind="guard" x="-153" y="-42">(noTMinor==false and  y &gt;=60)</label>
+			<label kind="synchronisation" x="-153" y="-68">closeMainRoad!</label>
+			<label kind="assignment" x="-153" y="-85">y = 0</label>
+			<nail x="-153" y="8"/>
 		</transition>
 	</template>
 	<template>
@@ -428,7 +386,7 @@ clock x;
 		<transition>
 			<source ref="id26"/>
 			<target ref="id21"/>
-			<label kind="guard" x="-50" y="-357">x&gt;=1</label>
+			<label kind="guard" x="34" y="-382">x&gt;=1</label>
 			<label kind="assignment" x="-50" y="-323">x=0, redMain=false</label>
 		</transition>
 		<transition>
@@ -495,6 +453,18 @@ system MainRoad, MinorRoad, SensorMainRoad, SensorMinorRoad, TrafficController;
 		<query>
 			<formula>E&lt;&gt; MinorRoad.Green</formula>
 			<comment>Minor-road light can go green.</comment>
+		</query>
+		<query>
+			<formula>SensorMinorRoad.High and !SensorMainRoad.High and MainRoad.Green and TrafficController.y &gt;30 --&gt; !MainRoad.Green</formula>
+			<comment>If minor-road has high traffic and major don't and major-road is green then its lights will change.</comment>
+		</query>
+		<query>
+			<formula>MinorRoad.Yellow and (MinorRoad.x &lt; 5) --&gt; MinorRoad.Yellow</formula>
+			<comment>Yellow ligth on minor-road stays on for 5 units of time.</comment>
+		</query>
+		<query>
+			<formula>MainRoad.Yellow and (MainRoad.x &lt; 5) --&gt; MainRoad.Yellow</formula>
+			<comment>Yellow ligth on major-road stays on for 5 units of time.</comment>
 		</query>
 	</queries>
 </nta>
