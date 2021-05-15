@@ -213,6 +213,15 @@ z=0</label>
 		</location>
 		<init ref="id8"/>
 		<transition>
+			<source ref="id10"/>
+			<target ref="id9"/>
+			<label kind="guard" x="110" y="17">(noTMain==false and y&gt;=60)</label>
+			<label kind="synchronisation" x="170" y="42">closeMinorRoad!</label>
+			<label kind="assignment" x="187" y="68">y=0</label>
+			<nail x="212" y="17"/>
+			<nail x="221" y="0"/>
+		</transition>
+		<transition>
 			<source ref="id8"/>
 			<target ref="id7"/>
 			<label kind="guard" x="-545" y="-136">( (hTMinor== true and lTMain==true) or
@@ -237,12 +246,13 @@ y&gt;=30</label>
 		<transition>
 			<source ref="id10"/>
 			<target ref="id9"/>
-			<label kind="guard" x="374" y="42">( hTMain== true or 
+			<label kind="guard" x="357" y="34">( hTMain== true or 
 noTMinor==true or
 (lTMain==true and lTMinor==true) ) and
 y&gt;=30</label>
-			<label kind="synchronisation" x="170" y="17">closeMinorRoad!</label>
-			<label kind="assignment" x="229" y="51">y = 0</label>
+			<label kind="synchronisation" x="357" y="17">closeMinorRoad!</label>
+			<label kind="assignment" x="340" y="110">y = 0</label>
+			<nail x="340" y="93"/>
 		</transition>
 		<transition>
 			<source ref="id11"/>

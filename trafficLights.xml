@@ -57,9 +57,6 @@ clock t;</declaration>
 			<name x="24" y="102">GreenYellow</name>
 			<label kind="invariant" x="24" y="153">x&lt;=1</label>
 		</location>
-		<location id="id8" x="-348" y="-314">
-			<name x="-358" y="-348">test</name>
-		</location>
 		<init ref="id2"/>
 		<transition>
 			<source ref="id5"/>
@@ -106,85 +103,82 @@ clock t;</declaration>
 clock x;
 
 </declaration>
-		<location id="id9" x="-25" y="-306" color="#00ff00">
-			<name x="-35" y="-340">Green</name>
+		<location id="id8" x="-51" y="-323" color="#00ff00">
+			<name x="-61" y="-357">Green</name>
 		</location>
-		<location id="id10" x="-195" y="-17" color="#ffff00">
-			<name x="-255" y="-34">Yellow</name>
-			<label kind="invariant" x="-263" y="-17">x &lt;= 5</label>
+		<location id="id9" x="-246" y="-17" color="#ffff00">
+			<name x="-306" y="-34">Yellow</name>
+			<label kind="invariant" x="-314" y="-17">x &lt;= 5</label>
 		</location>
-		<location id="id11" x="144" y="-17" color="#ff0000">
-			<name x="144" y="-42">Red</name>
+		<location id="id10" x="136" y="-17" color="#ff0000">
+			<name x="136" y="-42">Red</name>
 		</location>
-		<location id="id12" x="-238" y="-187">
-			<name x="-238" y="-179">GreenYellow</name>
-			<label kind="invariant" x="-298" y="-196">x&lt;=1</label>
+		<location id="id11" x="-246" y="-187">
+			<name x="-246" y="-179">GreenYellow</name>
+			<label kind="invariant" x="-306" y="-196">x&lt;=1</label>
 		</location>
-		<location id="id13" x="-8" y="68">
-			<name x="-102" y="59">YellowRed</name>
-			<label kind="invariant" x="-18" y="85">x &lt;=1</label>
+		<location id="id12" x="-34" y="59">
+			<name x="-128" y="50">YellowRed</name>
+			<label kind="invariant" x="-44" y="76">x &lt;=1</label>
 		</location>
-		<location id="id14" x="144" y="-238">
-			<name x="134" y="-272">RedGreen</name>
-			<label kind="invariant" x="170" y="-246">x&lt;=1</label>
+		<location id="id13" x="136" y="-255">
+			<name x="126" y="-289">RedGreen</name>
+			<label kind="invariant" x="162" y="-263">x&lt;=1</label>
 		</location>
-		<location id="id15" x="-204" y="-289">
-			<name x="-314" y="-314">GreenCompleting30sec</name>
-			<label kind="invariant" x="-272" y="-297">x&lt;=30</label>
+		<location id="id14" x="-246" y="-314">
+			<name x="-356" y="-339">GreenCompleting30sec</name>
+			<label kind="invariant" x="-314" y="-322">x&lt;=30</label>
 		</location>
-		<location id="id16" x="-382" y="-442">
-			<name x="-392" y="-476">test</name>
-		</location>
-		<init ref="id9"/>
+		<init ref="id8"/>
 		<transition>
-			<source ref="id9"/>
-			<target ref="id15"/>
+			<source ref="id8"/>
+			<target ref="id14"/>
 			<label kind="guard" x="-161" y="-331">x&lt;=30</label>
 			<label kind="synchronisation" x="-204" y="-357">sensorVehicleOff?</label>
 		</transition>
 		<transition>
-			<source ref="id15"/>
-			<target ref="id12"/>
+			<source ref="id14"/>
+			<target ref="id11"/>
 			<label kind="guard" x="-272" y="-246">x&gt;=30</label>
 			<label kind="assignment" x="-212" y="-246">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id9"/>
-			<target ref="id12"/>
+			<source ref="id8"/>
+			<target ref="id11"/>
 			<label kind="guard" x="-93" y="-221">x&gt;30</label>
 			<label kind="synchronisation" x="-110" y="-255">sensorVehicleOff?</label>
 			<label kind="assignment" x="-110" y="-195">x=0</label>
 			<nail x="-85" y="-187"/>
 		</transition>
 		<transition>
-			<source ref="id14"/>
-			<target ref="id9"/>
+			<source ref="id13"/>
+			<target ref="id8"/>
 			<label kind="guard" x="51" y="-297">x&gt;=1</label>
 			<label kind="synchronisation" x="42" y="-323">sensorVehicleOn!</label>
 			<label kind="assignment" x="34" y="-263">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id11"/>
-			<target ref="id14"/>
+			<source ref="id10"/>
+			<target ref="id13"/>
 			<label kind="synchronisation" x="153" y="-170">closeMinorRoad?</label>
 			<label kind="assignment" x="161" y="-119">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id13"/>
-			<target ref="id11"/>
+			<source ref="id12"/>
+			<target ref="id10"/>
 			<label kind="guard" x="76" y="25">x&gt;=1</label>
 			<label kind="synchronisation" x="-8" y="-8">openMinorRoad!</label>
 			<label kind="assignment" x="10" y="25">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id10"/>
-			<target ref="id13"/>
-			<label kind="guard" x="-136" y="-17">x&gt;=5</label>
-			<label kind="assignment" x="-85" y="8">x=0</label>
+			<source ref="id9"/>
+			<target ref="id12"/>
+			<label kind="guard" x="-195" y="0">x&gt;=5</label>
+			<label kind="assignment" x="-144" y="8">x=0</label>
 		</transition>
 		<transition>
-			<source ref="id12"/>
-			<target ref="id10"/>
+			<source ref="id11"/>
+			<target ref="id9"/>
 			<label kind="guard" x="-255" y="-136">x&gt;=1</label>
 			<label kind="assignment" x="-238" y="-110">x=0</label>
 		</transition>
