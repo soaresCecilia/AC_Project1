@@ -78,29 +78,6 @@ noTMain=false,
 z=0</label>
 			<nail x="0" y="51"/>
 		</transition>
-		<transition>
-			<source ref="id2"/>
-			<target ref="id1"/>
-			<label kind="guard" x="-221" y="-272">redMinor==true
-and 
-redMain==false
-and z&gt;=1</label>
-			<label kind="assignment" x="-323" y="-161">noTMain=true, 
-hTMain=false,
-lTMain=false,
-z=0</label>
-			<nail x="-255" y="-136"/>
-		</transition>
-		<transition>
-			<source ref="id1"/>
-			<target ref="id2"/>
-			<label kind="guard" x="-93" y="-161">z&gt;=1</label>
-			<label kind="assignment" x="-144" y="-110">hTMain=true, 
-lTMain=false, 
-noTMain=false,
-z=0</label>
-			<nail x="-93" y="-51"/>
-		</transition>
 	</template>
 	<template>
 		<name>SensorMinorRoad</name>
@@ -163,30 +140,6 @@ noTMinor=false,
 z=0</label>
 			<nail x="0" y="51"/>
 		</transition>
-		<transition>
-			<source ref="id5"/>
-			<target ref="id4"/>
-			<label kind="guard" x="-272" y="-221">redMain==true
-and
-redMinor==false
-and 
-z&gt;=1</label>
-			<label kind="assignment" x="-314" y="-102">noTMinor=true, 
-hTMinor=false,
-lTMinor=false,
-z=0</label>
-			<nail x="-255" y="-136"/>
-		</transition>
-		<transition>
-			<source ref="id4"/>
-			<target ref="id5"/>
-			<label kind="guard" x="-75" y="-195">z&gt;=1</label>
-			<label kind="assignment" x="-144" y="-93">hTMinor=true, 
-lTMinor=false, 
-noTMinor=false,
-z=0</label>
-			<nail x="-93" y="-51"/>
-		</transition>
 	</template>
 	<template>
 		<name>TrafficController</name>
@@ -200,12 +153,14 @@ z=0</label>
 		</location>
 		<location id="id8" x="-153" y="-119">
 			<name x="-212" y="-153">MainRoadGreen</name>
+			<label kind="invariant" x="-163" y="-102">y&lt;=60</label>
 		</location>
 		<location id="id9" x="348" y="0">
 			<name x="338" y="-34">MinorRoadYellow</name>
 		</location>
 		<location id="id10" x="221" y="127">
 			<name x="211" y="93">MinorRoadGreen</name>
+			<label kind="invariant" x="211" y="144">y&lt;=60</label>
 		</location>
 		<location id="id11" x="-161" y="127">
 			<name x="-171" y="93">MainRoadRed</name>
@@ -419,16 +374,20 @@ system MainRoad, MinorRoad, SensorMainRoad, SensorMinorRoad, TrafficController;
 </comment>
 		</query>
 		<query>
-			<formula>A[] MinorRoad.Green and TrafficController.y &lt; 30 imply MainRoad.Red and (SensorMainRoad.High or !SensorMainRoad.High)</formula>
+			<formula>A[] MinorRoad.Green and TrafficController.y &lt; 30 imply MainRoad.Red</formula>
 			<comment>If minor-road is green for less then 30 units of time then it will be green until then even regardeless traffic level on major-road.</comment>
 		</query>
 		<query>
-			<formula>A[] SensorMainRoad.High and MainRoad.Green and (TrafficController.y &lt; 60 ) imply MinorRoad.Red and (SensorMinorRoad.High or !SensorMinorRoad.High)</formula>
+			<formula>A[] SensorMainRoad.High and MainRoad.Green and (TrafficController.y &lt; 60 ) imply MinorRoad.Red</formula>
 			<comment>If there is high traffic in major-road and its green lights have been on, for less than 60 minutes, then it will remain green until then.</comment>
 		</query>
 		<query>
-			<formula>A&lt;&gt; ((!SensorMinorRoad.Non_existence imply MinorRoad.Green) &amp; (!SensorMainRoad.Non_existence imply MainRoad.Green))</formula>
-			<comment>If there are cars waiting they will eventually have green light.</comment>
+			<formula>!noTMinor and (TrafficController.y &gt; 60) --&gt; MinorRoad.Green</formula>
+			<comment>If there are cars waiting in the major-road they will eventually have green light.</comment>
+		</query>
+		<query>
+			<formula>!noTMain and (TrafficController.y &gt; 60) --&gt; MainRoad.Green</formula>
+			<comment>If there are cars waiting in the major-road they will eventually have green light.</comment>
 		</query>
 		<query>
 			<formula>A[] MinorRoad.Green imply !MainRoad.Green</formula>
@@ -447,11 +406,11 @@ system MainRoad, MinorRoad, SensorMainRoad, SensorMinorRoad, TrafficController;
 			<comment>Minor-road light can go green.</comment>
 		</query>
 		<query>
-			<formula>MinorRoad.Yellow and (MinorRoad.x &gt; 5) --&gt; !MinorRoad.Yellow</formula>
+			<formula>A[] MinorRoad.Yellow and (MinorRoad.x &gt; 5) imply MinorRoad.Red</formula>
 			<comment>Yellow ligth on minor-road stays on for 5 units of time.</comment>
 		</query>
 		<query>
-			<formula>MainRoad.Yellow and (MainRoad.x &gt; 5) --&gt; !MainRoad.Yellow</formula>
+			<formula>A[] MainRoad.Yellow and (MainRoad.x &gt; 5) imply MainRoad.Red</formula>
 			<comment>Yellow ligth on major-road stays on for 5 units of time.</comment>
 		</query>
 	</queries>
