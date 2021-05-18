@@ -8,6 +8,7 @@
 
 chan openMinorRoad, sensorVehicleOn, closeMinorRoad, sensorVehicleOff;
 
+
 clock t;</declaration>
 	<template>
 		<name>Sensor</name>
@@ -21,7 +22,7 @@ clock t;</declaration>
 		<transition>
 			<source ref="id1"/>
 			<target ref="id0"/>
-			<label kind="synchronisation" x="-41" y="-34">sensorVehicleOn?</label>
+			<label kind="synchronisation" x="-8" y="-102">sensorVehicleOn?</label>
 			<nail x="68" y="-76"/>
 		</transition>
 		<transition>
@@ -105,6 +106,7 @@ clock x;
 </declaration>
 		<location id="id8" x="-51" y="-323" color="#00ff00">
 			<name x="-61" y="-357">Green</name>
+			<label kind="invariant" x="-61" y="-306">x&lt;=30</label>
 		</location>
 		<location id="id9" x="-246" y="-17" color="#ffff00">
 			<name x="-306" y="-34">Yellow</name>
@@ -113,9 +115,9 @@ clock x;
 		<location id="id10" x="136" y="-17" color="#ff0000">
 			<name x="136" y="-42">Red</name>
 		</location>
-		<location id="id11" x="-246" y="-187">
-			<name x="-246" y="-179">GreenYellow</name>
-			<label kind="invariant" x="-306" y="-196">x&lt;=1</label>
+		<location id="id11" x="-246" y="-263">
+			<name x="-246" y="-255">GreenYellow</name>
+			<label kind="invariant" x="-306" y="-272">x&lt;=1</label>
 		</location>
 		<location id="id12" x="-34" y="59">
 			<name x="-128" y="50">YellowRed</name>
@@ -125,30 +127,14 @@ clock x;
 			<name x="126" y="-289">RedGreen</name>
 			<label kind="invariant" x="162" y="-263">x&lt;=1</label>
 		</location>
-		<location id="id14" x="-246" y="-314">
-			<name x="-356" y="-339">GreenCompleting30sec</name>
-			<label kind="invariant" x="-314" y="-322">x&lt;=30</label>
-		</location>
 		<init ref="id8"/>
 		<transition>
 			<source ref="id8"/>
-			<target ref="id14"/>
-			<label kind="guard" x="-161" y="-331">x&lt;=30</label>
-			<label kind="synchronisation" x="-204" y="-357">sensorVehicleOff?</label>
-		</transition>
-		<transition>
-			<source ref="id14"/>
 			<target ref="id11"/>
-			<label kind="guard" x="-272" y="-246">x&gt;=30</label>
-			<label kind="assignment" x="-212" y="-246">x=0</label>
-		</transition>
-		<transition>
-			<source ref="id8"/>
-			<target ref="id11"/>
-			<label kind="guard" x="-93" y="-221">x&gt;30</label>
-			<label kind="synchronisation" x="-110" y="-255">sensorVehicleOff?</label>
-			<label kind="assignment" x="-110" y="-195">x=0</label>
-			<nail x="-85" y="-187"/>
+			<label kind="guard" x="-170" y="-289">x&gt;=30</label>
+			<label kind="synchronisation" x="-255" y="-314">sensorVehicleOff?</label>
+			<label kind="assignment" x="-161" y="-331">x=0</label>
+			<nail x="-153" y="-289"/>
 		</transition>
 		<transition>
 			<source ref="id13"/>
@@ -190,19 +176,11 @@ system MainRoad, MinorRoad, Sensor;
     </system>
 	<queries>
 		<query>
-			<formula>!MinorRoad.Red --&gt; MinorRoad.Red</formula>
-			<comment>If minor-road light is not red eventually will become red.</comment>
+			<formula>A[] MainRoad.Red imply !MinorRoad.Red</formula>
+			<comment>The minor-road and the major-road ligths cannot be red at the same time.</comment>
 		</query>
 		<query>
-			<formula>MainRoad.GreenYellow or MainRoad.GreenCompleting30sec --&gt; MainRoad.Green</formula>
-			<comment>If the main-road light change from green eventually will become green again.</comment>
-		</query>
-		<query>
-			<formula>Sensor.Off --&gt; !MainRoad.Green</formula>
-			<comment>The green lights on major-road will eventually change</comment>
-		</query>
-		<query>
-			<formula>Sensor.Off &amp;&amp; !MainRoad.Red &amp;&amp; !MainRoad.RedGreen --&gt; MinorRoad.Green</formula>
+			<formula>Sensor.Off --&gt; MinorRoad.Green</formula>
 			<comment>If there are cars waiting they will eventually have green light.</comment>
 		</query>
 		<query>
@@ -216,6 +194,10 @@ system MainRoad, MinorRoad, Sensor;
 		<query>
 			<formula>E&lt;&gt; MainRoad.Red</formula>
 			<comment>The major-road light can go red.</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; Sensor.Off</formula>
+			<comment>Sensor can be off.</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; MinorRoad.Green</formula>

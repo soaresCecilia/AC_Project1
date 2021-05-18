@@ -13,8 +13,7 @@ chan openMinorRoad, closeMinorRoad, openMainRoad, closeMainRoad, changedLightMai
 clock t;
 
 
-int rd = 0;
-int noTMain_hTMinor = 0, first = 0, second, third = 0, fourth=0;
+int rd = 0, first = 0, second, third = 0, fourth=0;
 
 
 int countRounds(){
@@ -198,9 +197,7 @@ z=0</label>
 		<transition>
 			<source ref="id10"/>
 			<target ref="id10"/>
-			<label kind="guard" x="170" y="246">noTMain and y&gt;=60
-and 
-noTMain_hTMinor&gt;=4</label>
+			<label kind="guard" x="170" y="246">noTMain and y&gt;=60</label>
 			<nail x="321" y="229"/>
 			<nail x="160" y="229"/>
 		</transition>
@@ -416,7 +413,7 @@ system MainRoad, MinorRoad, SensorMainRoad, SensorMinorRoad, TrafficController;
 This must be false because if the minor-road has always high traffic and the major-road has alwyas no traffic than green light in minor-road will stay on forever. </comment>
 		</query>
 		<query>
-			<formula>(noTMain and hTMinor and first and second and third and fourth) --&gt; (MinorRoad.Green and rd &lt;=1 and noTMain and hTMinor)</formula>
+			<formula>(noTMain and hTMinor and first and second and third) --&gt; (MinorRoad.Green and rd &lt;=1)</formula>
 			<comment>If the minor-road's sensor always detects high traffic and the others detect no traffic at all, then we will observe at most one change in the traffic lights.</comment>
 		</query>
 		<query>
