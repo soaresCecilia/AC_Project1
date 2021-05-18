@@ -10,13 +10,31 @@ bool hTMinor=false, lTMinor=false, noTMinor= true, hTMain=true, lTMain=false, no
 
 chan openMinorRoad, closeMinorRoad, openMainRoad, closeMainRoad, changedLightMain, changedLightMinor;
 
+clock t;
 
 
+int rd = 0;
+int noTMain_hTMinor = 0;
 
 
+int countRounds(){
+    if (noTMain==true &amp;&amp; hTMinor==true)
+       rd++;
+    
+    return rd;
+}
 
 
-clock t;</declaration>
+int alwaysnoTMain() {
+    if (noTMain==true &amp;&amp; hTMinor==true)
+        noTMain_hTMinor++;
+    else {
+        noTMain_hTMinor = 0;
+        rd=0;
+    }
+
+    return noTMain_hTMinor;
+}</declaration>
 	<template>
 		<name>SensorMainRoad</name>
 		<declaration>clock z;</declaration>
@@ -153,20 +171,34 @@ z=0</label>
 		</location>
 		<location id="id8" x="-153" y="-119">
 			<name x="-212" y="-153">MainRoadGreen</name>
-			<label kind="invariant" x="-163" y="-102">y&lt;=60</label>
+			<label kind="invariant" x="-212" y="-136">y&lt;=60</label>
 		</location>
 		<location id="id9" x="348" y="0">
 			<name x="338" y="-34">MinorRoadYellow</name>
 		</location>
 		<location id="id10" x="221" y="127">
 			<name x="211" y="93">MinorRoadGreen</name>
-			<label kind="invariant" x="211" y="144">y&lt;=60</label>
+			<label kind="invariant" x="144" y="136">y&lt;=60</label>
 		</location>
 		<location id="id11" x="-161" y="127">
 			<name x="-171" y="93">MainRoadRed</name>
 			<urgent/>
 		</location>
 		<init ref="id8"/>
+		<transition>
+			<source ref="id8"/>
+			<target ref="id8"/>
+			<label kind="guard" x="-255" y="-229">noTMinor and y&gt;=60</label>
+			<nail x="-263" y="-204"/>
+			<nail x="-59" y="-204"/>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id10"/>
+			<label kind="guard" x="170" y="246">noTMain and y&gt;=60</label>
+			<nail x="321" y="229"/>
+			<nail x="160" y="229"/>
+		</transition>
 		<transition>
 			<source ref="id10"/>
 			<target ref="id9"/>
@@ -340,7 +372,7 @@ clock x;
 			<source ref="id18"/>
 			<target ref="id21"/>
 			<label kind="synchronisation" x="-221" y="-331">closeMainRoad?</label>
-			<label kind="assignment" x="-221" y="-382">x=0</label>
+			<label kind="assignment" x="-280" y="-374">x=0</label>
 			<nail x="-187" y="-348"/>
 		</transition>
 		<transition>
@@ -369,33 +401,46 @@ system MainRoad, MinorRoad, SensorMainRoad, SensorMinorRoad, TrafficController;
     </system>
 	<queries>
 		<query>
-			<formula>A&lt;&gt; !MinorRoad.Red imply MinorRoad.Red</formula>
+			<formula>!MinorRoad.Red --&gt; MinorRoad.Red</formula>
 			<comment>If minor-road's light isn't red, it will eventually become red.
+This must be false because if the minor-road has always high traffic and the major-road has alwyas no traffic than green light in minor-road will stay on forever. </comment>
+		</query>
+		<query>
+			<formula>A[] noTMain_hTMinor&gt;=3 imply rd&lt;=1</formula>
+			<comment>If the rightmost sensor always detects high traffic and the others detect no traffic at all, then we will observe at most one change in the traffic lights</comment>
+		</query>
+		<query>
+			<formula>A[] TrafficController.MainRoadGreen imply (noTMinor or TrafficController.y &lt;= 60)</formula>
+			<comment>If there is traffic in major-road and no traffic in minor-road, then the green light in major-road will remain on.
 </comment>
 		</query>
 		<query>
-			<formula>A[] MinorRoad.Green and TrafficController.y &lt; 30 imply MainRoad.Red</formula>
-			<comment>If minor-road is green for less then 30 units of time then it will be green until then even regardeless traffic level on major-road.</comment>
+			<formula>A[] TrafficController.MinorRoadGreen and TrafficController.y &lt;= 30 imply MainRoad.Red</formula>
+			<comment>If minor-road is green for less than or equal to 30 units of time then the major-road is red, regardeless its traffic level.</comment>
 		</query>
 		<query>
-			<formula>A[] SensorMainRoad.High and MainRoad.Green and (TrafficController.y &lt; 60 ) imply MinorRoad.Red</formula>
+			<formula>A[] TrafficController.MainRoadGreen and hTMain imply TrafficController.y &lt;= 60</formula>
 			<comment>If there is high traffic in major-road and its green lights have been on, for less than 60 minutes, then it will remain green until then.</comment>
 		</query>
 		<query>
-			<formula>!noTMinor and (TrafficController.y &gt; 60) --&gt; MinorRoad.Green</formula>
+			<formula>!noTMinor and MainRoad.Green --&gt; MinorRoad.Green</formula>
 			<comment>If there are cars waiting in the major-road they will eventually have green light.</comment>
 		</query>
 		<query>
-			<formula>!noTMain and (TrafficController.y &gt; 60) --&gt; MainRoad.Green</formula>
+			<formula>!noTMain and MinorRoad.Green --&gt; MainRoad.Green</formula>
 			<comment>If there are cars waiting in the major-road they will eventually have green light.</comment>
 		</query>
 		<query>
-			<formula>A[] MinorRoad.Green imply !MainRoad.Green</formula>
+			<formula>A[] (MinorRoad.Green imply !MainRoad.Green) or (!MinorRoad.Green imply MainRoad.Green)</formula>
 			<comment>The minor-road and the major-road ligths cannot be green at the same time.</comment>
 		</query>
 		<query>
 			<formula>A[] not deadlock</formula>
 			<comment>The system never enters in a deadlock state.</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; SensorMainRoad.Non_existence</formula>
+			<comment>The major-road's sensor can go non_existence.</comment>
 		</query>
 		<query>
 			<formula>E&lt;&gt; MainRoad.Red</formula>
@@ -406,12 +451,8 @@ system MainRoad, MinorRoad, SensorMainRoad, SensorMinorRoad, TrafficController;
 			<comment>Minor-road light can go green.</comment>
 		</query>
 		<query>
-			<formula>A[] MinorRoad.Yellow and (MinorRoad.x &gt; 5) imply MinorRoad.Red</formula>
-			<comment>Yellow ligth on minor-road stays on for 5 units of time.</comment>
-		</query>
-		<query>
-			<formula>A[] MainRoad.Yellow and (MainRoad.x &gt; 5) imply MainRoad.Red</formula>
-			<comment>Yellow ligth on major-road stays on for 5 units of time.</comment>
+			<formula>A[] (MinorRoad.Yellow imply (MinorRoad.x &lt;= 5)) and (MainRoad.Yellow imply (MainRoad.x &lt;= 5))</formula>
+			<comment>Yellow ligths stay on for 5 units of time.</comment>
 		</query>
 	</queries>
 </nta>
