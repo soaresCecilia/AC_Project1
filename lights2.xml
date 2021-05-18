@@ -14,26 +14,29 @@ clock t;
 
 
 int rd = 0;
-int noTMain_hTMinor = 0;
+int noTMain_hTMinor = 0, first = 0, second, third = 0, fourth=0;
 
 
 int countRounds(){
-    if (noTMain==true &amp;&amp; hTMinor==true)
+    if (noTMain==true &amp;&amp; hTMinor==true) {
        rd++;
+       first=1;
+    }
+    else first=0;
     
     return rd;
 }
 
-
-int alwaysnoTMain() {
-    if (noTMain==true &amp;&amp; hTMinor==true)
-        noTMain_hTMinor++;
-    else {
-        noTMain_hTMinor = 0;
+int alwaysnoTMain(int h) {
+    if (noTMain &amp;&amp; hTMinor){
+            h=1;
+    }
+    if (!noTMain || !hTMain) {
+        h=0;
         rd=0;
     }
 
-    return noTMain_hTMinor;
+    return h;
 }</declaration>
 	<template>
 		<name>SensorMainRoad</name>
@@ -195,7 +198,9 @@ z=0</label>
 		<transition>
 			<source ref="id10"/>
 			<target ref="id10"/>
-			<label kind="guard" x="170" y="246">noTMain and y&gt;=60</label>
+			<label kind="guard" x="170" y="246">noTMain and y&gt;=60
+and 
+noTMain_hTMinor&gt;=4</label>
 			<nail x="321" y="229"/>
 			<nail x="160" y="229"/>
 		</transition>
@@ -263,7 +268,8 @@ y&gt;=30</label>
 	</template>
 	<template>
 		<name>MinorRoad</name>
-		<declaration>clock x;</declaration>
+		<declaration>clock x;
+</declaration>
 		<location id="id12" x="-8" y="-306" color="#ff0000">
 			<name x="-18" y="-340">Red</name>
 		</location>
@@ -298,7 +304,8 @@ y&gt;=30</label>
 			<source ref="id16"/>
 			<target ref="id13"/>
 			<label kind="guard" x="-220" y="-106">x&gt;=1</label>
-			<label kind="assignment" x="-220" y="-72">x=0, redMinor=false</label>
+			<label kind="assignment" x="-220" y="-72">x=0, redMinor=false,
+second=alwaysnoTMain(second)</label>
 		</transition>
 		<transition>
 			<source ref="id14"/>
@@ -322,7 +329,8 @@ y&gt;=30</label>
 			<source ref="id12"/>
 			<target ref="id16"/>
 			<label kind="synchronisation" x="-187" y="-229">openMinorRoad?</label>
-			<label kind="assignment" x="-161" y="-263">x=0</label>
+			<label kind="assignment" x="-204" y="-297">x=0,
+first = alwaysnoTMain(first)</label>
 		</transition>
 	</template>
 	<template>
@@ -360,7 +368,8 @@ clock x;
 			<target ref="id20"/>
 			<label kind="guard" x="25" y="0">x&gt;=1</label>
 			<label kind="synchronisation" x="-17" y="17">changedLightMain!</label>
-			<label kind="assignment" x="25" y="59">redMain=true, x=0</label>
+			<label kind="assignment" x="25" y="59">redMain=true, x=0,
+fourth= alwaysnoTMain(fourth)</label>
 		</transition>
 		<transition>
 			<source ref="id23"/>
@@ -372,7 +381,7 @@ clock x;
 			<source ref="id18"/>
 			<target ref="id21"/>
 			<label kind="synchronisation" x="-221" y="-331">closeMainRoad?</label>
-			<label kind="assignment" x="-280" y="-374">x=0</label>
+			<label kind="assignment" x="-280" y="-374">x=0, rd=countRounds()</label>
 			<nail x="-187" y="-348"/>
 		</transition>
 		<transition>
@@ -385,13 +394,14 @@ clock x;
 			<source ref="id19"/>
 			<target ref="id22"/>
 			<label kind="guard" x="-238" y="8">x&gt;=5</label>
-			<label kind="assignment" x="-272" y="42">x=0</label>
+			<label kind="assignment" x="-272" y="42">x=0, 
+third= alwaysnoTMain(third)</label>
 		</transition>
 		<transition>
 			<source ref="id21"/>
 			<target ref="id19"/>
 			<label kind="guard" x="-391" y="-204">x&gt;=1</label>
-			<label kind="assignment" x="-391" y="-178">x=0</label>
+			<label kind="assignment" x="-391" y="-178">x=0, second=alwaysnoTMain(second)</label>
 		</transition>
 	</template>
 	<system>// Place template instantiations here.
@@ -406,8 +416,8 @@ system MainRoad, MinorRoad, SensorMainRoad, SensorMinorRoad, TrafficController;
 This must be false because if the minor-road has always high traffic and the major-road has alwyas no traffic than green light in minor-road will stay on forever. </comment>
 		</query>
 		<query>
-			<formula>A[] noTMain_hTMinor&gt;=3 imply rd&lt;=1</formula>
-			<comment>If the rightmost sensor always detects high traffic and the others detect no traffic at all, then we will observe at most one change in the traffic lights</comment>
+			<formula>(noTMain and hTMinor and first and second and third and fourth) --&gt; (MinorRoad.Green and rd &lt;=1 and noTMain and hTMinor)</formula>
+			<comment>If the minor-road's sensor always detects high traffic and the others detect no traffic at all, then we will observe at most one change in the traffic lights.</comment>
 		</query>
 		<query>
 			<formula>A[] TrafficController.MainRoadGreen imply (noTMinor or TrafficController.y &lt;= 60)</formula>
